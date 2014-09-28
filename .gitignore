@@ -1,0 +1,8 @@
+*.log
+*.bbl
+*.blg
+*.aux
+*.backup
+*.out
+*.toc
+OCELOTL_userguide.pdf
