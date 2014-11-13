@@ -20,7 +20,7 @@
 \usepackage{listings}
 %%
 %% date
-\RRdate{September 2014}
+\RRdate{November 2014}
 %%
 %%
 \RRauthor{
@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, as available in the github master repository \url{https://github.com/dosimont/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.0.4, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -82,13 +82,13 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 
 %=====================================================================
 
-Ocelotl is a tool to explore, analyze and visualize execution traces through aggregation techniques. It is part of the SoC-Trace project, and as such, it is integrated in the FrameSoC framework as an Eclipse plugin. 
+Ocelotl is a tool to explore, analyze and visualize execution traces through aggregation techniques. It is part of the SoC-Trace project, and as such, it is integrated in the FrameSoC framework as an Eclipse plug-in. 
 
-%\section{Installation}
-%Ocelotl come as an Eclipse plugin installed with the 
+\section{Installation}
+Please refer to the installation procedure described on the Ocelotl wiki page: \url{https://github.com/soctrace-inria/ocelotl/wiki/User-Guide}.
 
 
-\section{Launching Ocelotl}
+\section{Launch Ocelotl}
 
 \begin{figure}[h!]
 	\centering
@@ -98,12 +98,7 @@ Ocelotl is a tool to explore, analyze and visualize execution traces through agg
 \end{figure}
 
 In order to launch Ocelotl:
-%begin{wrapfigure}{R}{0.5\textwidth}
-% 		\begin{center}
-%   			\includegraphics[width=0.38\textwidth]{images/labeled.png}
-%  		\end{center}
-%  		\caption{The FrameSoC menu and the \textit{Analyze Trace} icon}
-%	\end{wrapfigure}
+
 \begin{enumerate}
 	\item 
 	\begin{itemize}
@@ -139,54 +134,60 @@ The Ocelotl tool view should open, as illustrated in Fig. \ref{ocelotlOverview}.
 \section{Ocelotl Features}
 In this section, we describe how to load a trace, launch the analysis and explore the results by modifying parameters. 
 
-\subsection{Loading a trace}
+\subsection{Load a trace}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.7]{images/traceSelection_labeled.pdf}
+	\includegraphics[width=\textwidth]{images/traceSelection_labeled.pdf}
 	\caption{Trace configuration interface}
 	\label{traceConf}
 \end{figure}
 
 \subsubsection{Select a trace}
 
-In the top right corner of Ocelotl, the \textit{Trace Overview} tab allows to select a trace to analyze (element \textcolor{red}{1} in Fig. \ref{traceConf}). It shows the traces already exported with Framesoc. 
+At the top of the Ocelotl window, the \textit{Trace Overview} tool bar allows to select a trace to analyze (element \textcolor{red}{1} in Fig. \ref{traceConf}). It shows the traces already exported in FrameSoC. Once a trace is selected, the default settings compatible with the trace are automatically selected. However it is possible to change these settings, as described in the following subsections. 
 
-\subsubsection{Microscopic Description Settings}
-Once a trace is selected, the \textit{Microscopic Description} combo becomes available (element \textcolor{red}{2} in Fig. \ref{traceConf}). It displays the operators compatible with the current trace. At the moment, the available operators are: 
+\subsubsection{Metric Selection}
+The \textit{Metric} combo (element \textcolor{red}{2} in Fig. \ref{traceConf}) displays the metrics compatible with the current trace.
+At the moment, the available metrics are: 
 \begin{itemize}
-	\item The \textit{Event Distribution}, that performs an analysis based on the event occurrences. This type of analysis is compatible with all the traces.
-	\item The \textit{State Distribution}, that performs an analysis based on the event duration. This analysis requires the trace to contains events of the type state.
-	\item The \textit{Variable Distribution}, that performs an analysis based on the variation of the value of the event over time. This analysis requires the trace to contains events of the type variable.
+	\item \textit{Events} which performs an analysis based on the event occurrences. This type of analysis is compatible with all the traces.
+	\item \textit{States} which performs an analysis based on the event duration. This analysis requires the trace to contain events of the type state.
+	\item \textit{Variables} which performs an analysis based on the variation of the value of the event over time. This analysis requires the trace to contain events of the type variable.
 \end{itemize}
-Moreover, all of these operators have a spatio-temporal equivalent (\textit{Hierarchical Event Distribution}, \textit{Hierarchical State Distribution} and \textit{Hierarchical Variable Distribution}) which take into account the spatial dimension as well (i.e. the hierarchy of event producers).
-\\ ~
-\\ ~ 
-Once the type of distribution selected, it is possible to configure the analysis by clicking on the \textit{Settings} button, which opens a setting window (cf. Figure \ref{microSettings}). 
+
+\subsubsection{Aggregation Operator Selection}
+Once the type of metric selected, it is possible to choose the aggregation operator (element \textcolor{red}{3} in Fig. \ref{traceConf}). Two operators are available:
+\begin{itemize}
+	\item The \textit{Temporal aggregation}, which performs an aggregation based only on the temporal dimension.
+	\item The \textit{Spatiotemporal aggregation}, which performs an aggregation based on the temporal and the spatial dimension. The spatial dimension is based on the hierarchy of event producers.
+\end{itemize}
+
+It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Figure \ref{microSettings})
+
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.6]{images/state_settings.png}
-	\caption{Microscopic Description Settings}
+	\includegraphics[scale=0.4]{images/state_settings.png}
+	\caption{Aggregation Settings}
 	\label{microSettings}
 \end{figure}
 
-By default, all the event types and all the event producers are selected. The available settings are:
+In the aggregation settings, by default, all the event types and all the event producers are selected. The available settings are:
 \begin{itemize}
 	\item in the \textit{Event Types} tab, the filtering of the event types involved in the analysis;
-	\item in the \textit{Event Producers} tab, the filtering of the event producers (the resources that produce the events) involved in the analysis. The producers are shown with their hierarchy, and depending on whether the operator required a valid hierarchy or not\footnote{The spatio-temporal operators take into account the hierarchy, while the temporal ones do not.}, the deselection of a parent node might lead to the deselection of its children nodes. The \textit{Add Result} button enables to load a set of event producers saved as an analysis result by another tool;
-   
+	\item in the \textit{Event Producers} tab, the filtering of the event producers (the resources that produce the events) involved in the analysis. The producers are shown with their hierarchy, and depending on whether the operator required a valid hierarchy or not\footnote{The spatio-temporal operators take into account the hierarchy, while the temporal ones do not.}, the deselection of a parent node can lead to the deselection of its children nodes. The \textit{Add Result} button enables to load a set of event producers saved as an analysis result by another tool;
 \end{itemize}
 
 \subsubsection{Visualization Settings}
-Once a distribution is selected, the \textit{Visualization} combo (element \textcolor{red}{3} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected time operator. The currently available choices are:
+\label{visuop}
+The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected metric and aggregation operator. The currently available choices are:
 \begin{itemize}
-	\item \textit{Parts}: for a visualization showing aggregates that correspond to an homogeneous behavior in the trace. The aggregates are separated by a blank space and all have a different color. In \textit{Settings}, the available parameters are:
+	\item \textit{Partition}: is a visualization showing aggregates that correspond to an homogeneous behavior in the trace. The aggregates are separated by a blank space and all have a different colors. For a temporal aggregation, the available parameters in \textit{Settings} are:
 	\begin{itemize}
-		\item \textit{Aggregate parts}: gathers time slices that belong to the same aggregate. If not active, each time slice is separated, and their aggregation is shown thanks to their color.
-		\item \textit{Show part number}: attributes a number to each aggregate to help distinguishing them.
+		\item \textit{Aggregate parts}: gather time slices that belong to the same aggregate. If not active, each time slice is separated, and their aggregation is shown thanks to their color.
+		\item \textit{Show part number}: display the number of each aggregate part to help distinguishing them.
 	\end{itemize}
-	\item \textit{Proportions}: for a visualization showing the same aggregates as in \textit{Parts}, but also the proportion of event occurrences (or the ratio of state duration, if state distribution was selected in the previous step) for each aggregate. In this visualization, each event/state is separated vertically in each aggregate and their proportion is shown by making the height of each event/state in an aggregate proportional to its occurrence/duration. The events/states that have a proportion too small to be visible, are aggregated and displayed on top of the aggregate as a dotted line. In the \textit{Settings} window, you can customize the color of each event.
-	\item \textit{Matrix}: is the equivalent of the Parts view but with the addition of the spatial dimension.
-	\item \textit{Mode}: is the equivalent of the Proportions view but with the addition of the spatial dimension.
+	\item \textit{Temporal Stacked Bar Chart}: is a visualization showing the same aggregates as in \textit{Parts}, but also the proportion of event occurrences (or the ratio of state duration, if state distribution was selected in the previous step) for each aggregate. In this visualization, each event/state is separated vertically in each aggregate and their proportion is shown by making the height of each event/state in an aggregate proportional to its occurrence/duration. The events/states that have a proportion too small to be visible, are aggregated and displayed on top of the aggregate as a dotted line. In the \textit{Settings} window, you can customize the color of each event.
+	\item \textit{Mode}: is a visualization based on the value that appears most often \footnote{It is based on the notion of mode in statistics \url{http://en.wikipedia.org/wiki/Mode_(statistics)}}. It is available for both temporal and spatiotemporal aggregation operators. In the \textit{Settings} window, you can customize the color of each event.
 \end{itemize}
 
 \subsection{Quality Curves}
@@ -203,10 +204,25 @@ The vertical blue line shows the current value of the parameter.
 \end{figure}
 
 \subsection{General Settings}
-Next to the \textit{Trace Overview} tab, three other tabs provide more configuration parameters:
+At the top right of the Ocelotl tool, a button launches a window to configure the Ocelotl settings (Figure \ref{ocelotlsettings}).
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{images/ocelotlSettings.png}
+	\caption{Ocelotl Settings}
+	\label{ocelotlsettings}
+\end{figure}
+
+\subsubsection{Quality Curves settings}
+The tab \textit{Quality Curves} enables to change the appearance of complexity and information curves provided by the aggregation algorithm:
+\begin{itemize}
+	\item \textit{Normalize Qualities}: normalizes the curves and scale them on the interval $[0:1]$, which improves their readabilty. \underline{\textbf{Note:}} normalization should not be used with spatiotemporal operators since it provides incorrect results.
+    \item You can choose between two representations of the curves: rising curves (complexity gain, information gain) or decreasing curves (complexity reduction, information loss).
+    \item The \textit{Threshold} parameter determines the quality curves precision. The more its value decreases, the more the precision increases and the more aggregation steps are found. However, setting a too small value may lead to bad performances, so we advice to keep the default value.
+\end{itemize}
 
 \subsubsection{Cache Settings}
-To prevent time-consuming loading of traces from the database, we use a cache system to accelerate access to the trace raw data. If the cache is enabled in the settings, then first time a trace is analyzed, a cache file is generated. A cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an aggregation operator, and a specific time region.
+To prevent time-consuming loading of traces from the database, we use a cache system to accelerate access to the trace raw data. If the cache is enabled in the settings, then the first time a trace is analyzed, a cache file is generated. A cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metric operator, and a specific time region.
 
 Several settings are available to configure the cache:
 \begin{itemize}
@@ -215,31 +231,25 @@ Several settings are available to configure the cache:
 	\item \textit{Datacache directory}: specify the directories where the cache files are stored.
 	\item \textit{Maximum datacache size}: specify the maximum cache size in megabytes. When the maximum size is reached, the cache files with the oldest accessed dates are deleted until enough space is available. Specifying a value of -1 means that there is no maximal limit to the cache size.
 	\item \textit{Cache time slice}: the first time a trace is loaded, a cache file is generated --- if the cache is enabled. This parameters specifies the number of time slices used for the generated cache. A higher number means a more accurate cache, but also a bigger cache file.
-	\item \textit{Cache policy}: specify the rebuilding policy used to rebuild the data from the cache file when a "clean" rebuilding is not possible\footnote{A "clean" rebuild means that no time slice of the cache is split inside two time slices of the currently built microscopic description (such time slices are called "dirty" time slices). Typically it is clean when the number of time slices of the cache is dividable by the current number of slices (for example, if the cache was built with 10 000 time slices and the current rebuilt uses only 100 time slices, then one time slice of the new model will be built each from 100 time slices of the cache. But if the current rebuild is using 150 time slices, then some time slices of the cache would be split between two of the new time slices. The rebuild strategies are thus used for those "dirty" cases.}. The available choices are:
+	\item \textit{Cache policy}: specify the rebuilding policy used to rebuild the data from the cache file when a "clean" rebuilding is not possible\footnote{A "clean" rebuild means that no time slice of the cache is split inside two time slices of the currently built microscopic description (such time slices are called "dirty" time slices). Typically it is clean when the number of time slices of the cache is dividable by the current number of slices (for example, if the cache was built with 10 000 time slices and the current rebuilt uses only 100 time slices, then one time slice of the new model will be built each from 10 time slices of the cache. But if the current rebuild is using 150 time slices, then some time slices of the cache would be split between two of the new time slices. The rebuild strategies are thus used for those "dirty" cases.}. The available choices are:
 	\begin{itemize}
-		\item \textit{Fast}: the dirty time slices are rebuilt by multiplying the values proportionally to the division of the cache time slice between the two new time slice (e.g. for a time slice which is split with 30\% of its time in one time slice and 70\% in the other, its values will be multiplied by 0.3 and 0.7 respectively). While this is a fast method, it may not be accurate in all cases (especially in cases with high ratio of dirty time slices).
+		\item \textit{Fast}: the dirty time slices are rebuilt by multiplying the values proportionally to the division of the cache time slice between the two new time slices (e.g. for a time slice which is split with 30\% of its time in one time slice and 70\% in the other, its values will be multiplied by 0.3 and 0.7 respectively). While this is a fast method, it may not be accurate in all cases (especially in cases with high ratio of dirty time slices).
 		\item \textit{Accurate}: the dirty slices are rebuilt by performing a request to the database so that the events are rebuilt precisely. Depending on the event nature (punctual event, state, etc.), the rebuilding can be pretty slow.
 		\item \textit{Automated}: try to automatically choose the best strategy between \textit{Fast} and \textit{Precise}. 
 		\item \textit{Ask me}: show a dialog to the user at each run, from which he can select a strategy.
 	\end{itemize}   
 \end{itemize} 
 
-\subsubsection{Quality Curves settings}
-The tab \textit{Quality Curves} enables to change the appearance of complexity and information curves provided by the aggregation algorithm:
-\begin{itemize}
-	\item \textit{Normalize Qualities}: normalizes the curves and scale them on the interval $[0:1]$, which improves their readabilty. \underline{\textbf{Note:}} normalization should not be used with spatio-temporal operators since it provides incorrect results.
-    \item You can choose between two representations of the curves: rising curves (complexity gain, information gain) or decreasing curves (complexity reduction, information loss).
-    \item The \textit{Threshold} parameter determines the quality curves precision. The more its value decreases, the more the precision increases and the more aggregation steps are found. However, setting a too small value may lead to bad performances, so we advice to keep the default value.
-\end{itemize}
-
-
 \subsubsection{Advanced Settings}
 In the \textit{Advanced Settings} tab, you can configure some advanced settings\footnote{\textbf{Note:} Modifying these values might decrease the trace reading performances.}:
 \begin{itemize}
 	\item \textit{Event Number Retrieved by Threads}: set how much events are loaded by threads for each iteration during the trace reading.
-	\item \textit{Event Producers per Query}: enables to divide the query into several queries with a fixed number of event producers. This functionality is useful if the disk space is low, as the temp directory is used to store the query result during the trace reading. The default value is 0 which corresponds to fetching all producers in one query.
+	\item \textit{Event Producers per Query}: enable to divide the query into several queries with a fixed number of event producers. This functionality is useful if the amount of free space on the drive is low, as the temp directory is used to store the query result during the trace reading. The default value is 0 which corresponds to fetching all producers in one query.
 	\item \textit{Working Threads}: set the number of active threads during the trace reading. 
 \end{itemize}
+
+\subsubsection{Miscellaneous Settings}
+The \textit{Miscellaneous Settings} allow to set the saving directory of the snapshots taken in Ocelolt.
 
 \subsection{Time settings}
 In order to tune the time settings, several parameters can be modified in the bar under the graph display area (Figure \ref{timeSettings}).
@@ -252,7 +262,7 @@ In order to tune the time settings, several parameters can be modified in the ba
 \end{figure}
 
 \subsubsection{Time Stamps}
-You can change the trace time bounds thanks to the \textit{Start} and \textit{End} fields (\textcolor{red}{1} and \textcolor{red}{2} resp. in Figure \ref{timeSettings}) at the bottom of the window. By default, after loading a trace, the values are the starting and ending timestamps of the trace. If an area of the graph is selected, or if a zooming operation is performed, the displayed values are the starting and ending timestamps of the selected area. The \textit{Reset} (\textcolor{red}{3}) button enables to get the original values back.
+You can change the trace time bounds by using the \textit{Start} and \textit{End} fields (\textcolor{red}{1} and \textcolor{red}{2} resp. in Figure \ref{timeSettings}) at the bottom of the window. By default, after loading a trace, the values are the starting and ending timestamps of the trace. If an area of the graph is selected, or if a zooming operation is performed, the displayed values are the starting and ending timestamps of the selected/zoomed area. The \textit{Reset} (\textcolor{red}{3}) button enables to get the original values back.
 
 \subsubsection{Time Slices}
 The \textit{Timeslice Number} field (\textcolor{red}{4}) corresponds to the number of time slices that will be used to compute the aggregation. It is advised to tune this parameter in order to find a granularity that is convenient to the analysis. As the aggregation algorithm complexity is dependent on this parameter, it is advised to increment it progressively to keep good performances.
@@ -262,28 +272,28 @@ To analyze the trace, several parameters allows to explore  different levels of 
  
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.8]{images/aggregationSettings.pdf}
+	\includegraphics[scale=1.0]{images/aggregationSettings.pdf}
 	\caption{Aggregation Settings}
 	\label{aggregSettings}
 \end{figure}
 
 \subsubsection{Run an Analysis}
-After having set the configuration, click on RUN! (\textcolor{red}{3} in Fig. \ref{aggregSettings}) (or press ENTER on the keyboard). The aggregation is then computed. This operation can take a while. When it is finished, the visualization and the curves are shown, as illustrated in Fig. \ref{showAggreg}.
+After having set the configuration, click on RUN! (\textcolor{red}{4} in Fig. \ref{aggregSettings}) (or press ENTER on the keyboard). The aggregation is then computed. This operation can take a while. When it is finished, the visualization and the curves are shown, as illustrated in Fig. \ref{showAggreg}.
 
 \subsubsection{Change the Aggregation strength}
 In order to find a relevant aggregation, you can tune the \textit{Parameter} setting. This parameter allows to explore different aggregation levels, by navigating between different balances of the information loss and the gain in complexity. There are three ways to do this:
 \begin{enumerate}
 	\item Click on the curves. The corresponding parameter value is retrieved, and used to show the associated aggregation.
-	\item Use the $<$ and $>$ buttons (\textcolor{red}{2}) (or use left and right arrows on the keyboard). It increments or decrements the parameter.
+	\item Use the $<$- and -$>$ buttons (\textcolor{red}{2}) (or use left and right arrows on the keyboard). It increments or decrements the parameter.
 	\item Enter a value manually, in the \textit{Parameter} field (\textcolor{red}{1}). The value must be between 1 and 0.
 \end{enumerate}
-A value of 1 means that the aggregation strength is maximal: all the trace is aggregated. On the opposite, a value of 0 means that each time slice is disaggregated. An intermediate value provides a compromise between both extrema.
+A value of 1 means that the aggregation strength is maximal: all the trace is aggregated. On the opposite, a value of 0 means that each time slice is disaggregated. An intermediate value provides a compromise between both extrema. The button (\textcolor{red}{3}) resets the parameter to its default value --- i.e. the value displayed just after a run.
 
 \subsubsection{Zoom}
 Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
 
 \subsubsection{Switch to another view}
-It is possible to display the trace in a Gantt chart or in an event table by clicking on the corresponding button in the top right corner. The newly opened view will show the events of the trace that are within the time bounds shown in the \textit{Start} and \textit{End} fields. You can focus on an area by selecting it with the mouse left button drag and then switching directly to another view, without loading the aggregation with the RUN! button. 
+It is possible to display the trace in a Gantt chart or in an event table by clicking on the corresponding button in the top right corner. The newly opened view will show the events of the trace that are within the time bounds shown in the \textit{Start} and \textit{End} fields. You can focus on an area by selecting it with the mouse left button and then switching directly to another view, without loading the aggregation with the RUN! button. 
 
 \subsection{Graph Display}
 \begin{figure}[h!]
@@ -295,16 +305,43 @@ It is possible to display the trace in a Gantt chart or in an event table by cli
 
 Figure \ref{showAggreg} shows an aggregated trace, with the proportion view. At the bottom of the graph, a time axis shows the time stamps of the currently displayed events. Events of different types have different colors. By letting the mouse over a part of the graph for a short time, a tooltip note shows the type of events represented by that part of the graph. For the event view, this note also displays the number of occurrences of the events divided by the duration of the aggregate\footnote{The time unit of the trace is displayed in the \textit{Trace Details} tab on the left bottom of the screen.}. For the state view, it is the state duration divided by the aggregate duration.
 
-
 \subsection{Load and save a cache file}
 \subsubsection{Load}
-An alternative way to load a trace, instead of using the combo box, is to load it from its cache file, by using the button to the right of the combo box (element \textcolor{red}{4} in Fig. \ref{traceConf}). It opens a new window, allowing to select a cache file. If the selected cache file is valid and corresponds to a trace currently in the Framesoc database, then the trace is automatically loaded with the settings saved in the cache file.
+An alternative way to load a trace, instead of using the combo box, is to load it from its cache file, by using the button to the right of the combo box (element \textcolor{red}{5} in Fig. \ref{traceConf}). It opens a new window, allowing to select a cache file. If the selected cache file is valid and corresponds to a trace currently in the Framesoc database, then the trace is automatically loaded with the settings saved in the cache file.
 
 \subsubsection{Save}
-Once a run has been performed on a trace, a cache file is generated, in order to speed up the next analysis of the trace. It is then possible to save this cache to a specific location, in order to get a fast access later. This is done by pressing the button to the far right of the \textit{Microscopic Description} combo box (element \textcolor{red}{5} in Fig. \ref{traceConf}).
+Once a run has been performed on a trace, a cache file is generated, in order to speed up the next analysis of the trace. It is then possible to save this cache to a specific location, in order to get a fast access later. This is done by pressing the button to the far right of the \textit{Aggregation Operator} combo box (element \textcolor{red}{6} in Fig. \ref{traceConf}).
+
+\subsection{Overview}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/overview.png}
+	\caption{An overview of a trace}
+	\label{stats}
+\end{figure}
+In the top right corner, Ocelotl displays an overview of the current trace, which gives the context of the trace. When a zoomed view of a trace is displayed, the overview highlights in white the currently displayed view. When selecting a part of the view on the graph, the corresponding selection is highlighted in blue on the overview.
+
+The overview shows a temporal summary of the currently displayed trace. It is based on the mode operator described in subsection \ref{visuop}.
+
+\subsection{Statistics}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/statistics.png}
+	\caption{An example of statistics}
+	\label{stats}
+\end{figure}
+Ocelotl displays statistics about the currently selected data (figure \ref{stats}). The data selection is performed by dragging the mouse in the display of the aggregated graph, or, to select a single time slice, by performing a single click on the desired time slice. The statistics display is updated when the mouse button is released. To reset the selection, click on the \textit{Reset} button (\textcolor{red}{3} in figure \ref{timeSettings}) which sets the statistics data for the whole displayed region. 
+
+The combo box lists all the compatible statistics operators for the currently selected operators. For now, only one statistic operator is available. It summarizes the data of the currently selected time region:
+\begin{itemize} 
+	\item If the \textit{Events} metric is selected, then all events are considered to be punctual events, then the statistics display shows for each type of events the number of occurrences of each events.
+	\item If the \textit{States} metric is selected, then the statistics display shows the portion of time spend in this state during the selected time region. Note that the total percentage can be different of 100\% since some event producers might be in no state and then the total is under 100\%. It is also possible possible to have more than 100\%, since some states can be embedded, meaning that an event producer can have more than one active state.
+\end{itemize}
+
+The statistics can be sorted by clicking on the column names of the table.
 
 \subsection{Take a snapshot}
-In order to save the currently displayed diagram and curve, it is possible to save them as images along with the current parameters of the trace in text file. This is done by the button at the far right of the bottom bar under the display (element \textcolor{red}{5} in Fig. \ref{timeSettings}). 
+In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in text file. This is done by clicking the button at the top right of the display.
 
 \subsection{Known Issues}
 You may need to resize manually the different views, according to your resolution.
