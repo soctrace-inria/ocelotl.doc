@@ -1,5 +1,5 @@
 %%
-%% FrameSoC Workbench User Guide
+%% Ocelotl User Guide
 %%
 
 \documentclass[twoside]{article}
@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.0.4, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.0.5, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -162,7 +162,7 @@ Once the type of metric selected, it is possible to choose the aggregation opera
 	\item The \textit{Spatiotemporal aggregation}, which performs an aggregation based on the temporal and the spatial dimension. The spatial dimension is based on the hierarchy of event producers.
 \end{itemize}
 
-It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Figure \ref{microSettings})
+It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Fig. \ref{microSettings})
 
 \begin{figure}[h!]
 	\centering
@@ -204,7 +204,13 @@ The vertical blue line shows the current value of the parameter.
 \end{figure}
 
 \subsection{General Settings}
-At the top right of the Ocelotl tool, a button launches a window to configure the Ocelotl settings (Figure \ref{ocelotlsettings}).
+At the top right of the Ocelotl tool, a button (\textcolor{red}{1} in Fig. \ref{ocelotlButtons}) launches a window to configure the Ocelotl settings (Fig. \ref{ocelotlsettings}).
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.5]{images/ocelotlButtons.pdf}
+	\caption{Ocelotl Features: 1. General settings; 2. Take a snapshot; 3. Previous zoom value; 4. Next zoom value}
+	\label{ocelotlButtons}
+\end{figure}
 
 \begin{figure}[h!]
 	\centering
@@ -252,7 +258,7 @@ In the \textit{Advanced Settings} tab, you can configure some advanced settings\
 The \textit{Miscellaneous Settings} allow to set the saving directory of the snapshots taken in Ocelolt.
 
 \subsection{Time settings}
-In order to tune the time settings, several parameters can be modified in the bar under the graph display area (Figure \ref{timeSettings}).
+In order to tune the time settings, several parameters can be modified in the bar under the graph display area (Fig. \ref{timeSettings}).
  
 \begin{figure}[h!]
 	\centering
@@ -262,7 +268,7 @@ In order to tune the time settings, several parameters can be modified in the ba
 \end{figure}
 
 \subsubsection{Time Stamps}
-You can change the trace time bounds by using the \textit{Start} and \textit{End} fields (\textcolor{red}{1} and \textcolor{red}{2} resp. in Figure \ref{timeSettings}) at the bottom of the window. By default, after loading a trace, the values are the starting and ending timestamps of the trace. If an area of the graph is selected, or if a zooming operation is performed, the displayed values are the starting and ending timestamps of the selected/zoomed area. The \textit{Reset} (\textcolor{red}{3}) button enables to get the original values back.
+You can change the trace time bounds by using the \textit{Start} and \textit{End} fields (\textcolor{red}{1} and \textcolor{red}{2} resp. in Fig. \ref{timeSettings}) at the bottom of the window. By default, after loading a trace, the values are the starting and ending timestamps of the trace. If an area of the graph is selected, or if a zooming operation is performed, the displayed values are the starting and ending timestamps of the selected/zoomed area. The \textit{Reset} (\textcolor{red}{3}) button enables to get the original values back.
 
 \subsubsection{Time Slices}
 The \textit{Timeslice Number} field (\textcolor{red}{4}) corresponds to the number of time slices that will be used to compute the aggregation. It is advised to tune this parameter in order to find a granularity that is convenient to the analysis. As the aggregation algorithm complexity is dependent on this parameter, it is advised to increment it progressively to keep good performances.
@@ -290,20 +296,35 @@ In order to find a relevant aggregation, you can tune the \textit{Parameter} set
 A value of 1 means that the aggregation strength is maximal: all the trace is aggregated. On the opposite, a value of 0 means that each time slice is disaggregated. An intermediate value provides a compromise between both extrema. The button (\textcolor{red}{3}) resets the parameter to its default value --- i.e. the value displayed just after a run.
 
 \subsubsection{Zoom}
-Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
+Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Once the mouse is released the selection will adjust to nearest selected time slice. It is is also possible to select just one time slice performing a simple click. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
+
+\paragraph{Spatial Selection}
+If a spatio-temporal aggregation operator was chosen, then it is possible to perform a spatial zoom also. If more than one producer are selected, then the spatial selection automatically adjust to the parent node containing all the selected producers. A click on the RUN! button will display zoom on the selected area.
+
+\paragraph{Zoom history}
+During an exploration session of a trace, the zoom history is recorded, on both temporal and spatial dimensions (i.e. the selected time zones, and the selected event producers). It is possible to browse the history through the $-$ and $+$ buttons in the top right corner (cf. \textcolor{red}{3} and \textcolor{red}{4} in \ref{ocelotlButtons}). The $-$ button shows the previous zoom value, and the $+$ button shows the next zoom value. The history is lost when a different trace  or a different aggregation operator is selected.
 
 \subsubsection{Switch to another view}
-It is possible to display the trace in a Gantt chart or in an event table by clicking on the corresponding button in the top right corner. The newly opened view will show the events of the trace that are within the time bounds shown in the \textit{Start} and \textit{End} fields. You can focus on an area by selecting it with the mouse left button and then switching directly to another view, without loading the aggregation with the RUN! button. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.0]{images/framesoc_buttons.png}
+	\caption{Framesoc tools buttons}
+	\label{framesocTools}
+\end{figure}
+It is possible to display the trace with the other visualization tools integrated in Framesoc: a Gantt chart, an event table, a statistics pie chart and a density chart. This is performed by clicking on the corresponding button in the top right corner, shown in Fig. \ref{framesocTools}. The newly opened view will show the events of the trace that are within the time bounds shown in the \textit{Start} and \textit{End} fields. You can focus on an area by selecting it with the mouse left button and then switching directly to another view, without loading the aggregation with the RUN! button. 
 
 \subsection{Graph Display}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1.0\textwidth]{images/ocelotl_aggregated.png}
+	\includegraphics[width=1.0\textwidth]{images/ocelotlAggregated.png}
 	\caption{A graph showing an aggregated trace}
 	\label{showAggreg}
 \end{figure}
 
-Figure \ref{showAggreg} shows an aggregated trace, with the proportion view. At the bottom of the graph, a time axis shows the time stamps of the currently displayed events. Events of different types have different colors. By letting the mouse over a part of the graph for a short time, a tooltip note shows the type of events represented by that part of the graph. For the event view, this note also displays the number of occurrences of the events divided by the duration of the aggregate\footnote{The time unit of the trace is displayed in the \textit{Trace Details} tab on the left bottom of the screen.}. For the state view, it is the state duration divided by the aggregate duration.
+Fig. \ref{showAggreg} shows an aggregated trace, with the proportion view. At the bottom of the graph, a time axis shows the time stamps of the currently displayed events. Events of different types have different colors. By letting the mouse over a part of the graph for a short time, a tooltip note shows the type of events represented by that part of the graph. For the event view, this note also displays the number of occurrences of the events divided by the duration of the aggregate\footnote{The time unit of the trace is displayed in the \textit{Trace Details} tab on the left bottom of the screen.}. For the state view, it is the state duration divided by the aggregate duration.
+
+\subsubsection{Spatio-temporal Aggregate}
+If a spatio-temporal aggregation is used, it is possible that the size of the window does not allow to correctly display the aggregates, especially if there is a great number of producers. If in the aggregate there is only disparities on the spatial level, then the aggregate is displayed with right to left stripes. If the disparities are also temporal, then the stripes go from left to right. Both of these cases can be seen in Fig. \ref{showAggreg}. In any case, to display the content of the aggregate, right-click on the aggregate and the content will be displayed in a new window. To close the newly created window, simply click on it.
 
 \subsection{Load and save a cache file}
 \subsubsection{Load}
@@ -317,11 +338,13 @@ Once a run has been performed on a trace, a cache file is generated, in order to
 	\centering
 	\includegraphics[width=0.7\textwidth]{images/overview.png}
 	\caption{An overview of a trace}
-	\label{stats}
+	\label{overview}
 \end{figure}
 In the top right corner, Ocelotl displays an overview of the current trace, which gives the context of the trace. When a zoomed view of a trace is displayed, the overview highlights in white the currently displayed view. When selecting a part of the view on the graph, the corresponding selection is highlighted in blue on the overview.
 
 The overview shows a temporal summary of the currently displayed trace. It is based on the mode operator described in subsection \ref{visuop}.
+
+\underline{\textbf{Note:}} Since the overview is computed in a different thread, there may be a delay before it appears.
 
 \subsection{Statistics}
 \begin{figure}[h!]
@@ -330,7 +353,7 @@ The overview shows a temporal summary of the currently displayed trace. It is ba
 	\caption{An example of statistics}
 	\label{stats}
 \end{figure}
-Ocelotl displays statistics about the currently selected data (figure \ref{stats}). The data selection is performed by dragging the mouse in the display of the aggregated graph, or, to select a single time slice, by performing a single click on the desired time slice. The statistics display is updated when the mouse button is released. To reset the selection, click on the \textit{Reset} button (\textcolor{red}{3} in figure \ref{timeSettings}) which sets the statistics data for the whole displayed region. 
+Ocelotl displays statistics about the currently selected data (as illustrated by Fig. \ref{stats}). The data selection is performed by dragging the mouse in the display of the aggregated graph, or, to select a single time slice, by performing a single click on the desired time slice. The statistics display is updated when the mouse button is released. To reset the selection, click on the \textit{Reset} button (\textcolor{red}{3} in Fig. \ref{timeSettings}) which sets the statistics data for the whole displayed region. 
 
 The combo box lists all the compatible statistics operators for the currently selected operators. For now, only one statistic operator is available. It summarizes the data of the currently selected time region:
 \begin{itemize} 
@@ -341,7 +364,7 @@ The combo box lists all the compatible statistics operators for the currently se
 The statistics can be sorted by clicking on the column names of the table.
 
 \subsection{Take a snapshot}
-In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in text file. This is done by clicking the button at the top right of the display.
+In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
 
 \subsection{Known Issues}
 You may need to resize manually the different views, according to your resolution.
