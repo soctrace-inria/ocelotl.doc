@@ -20,7 +20,7 @@
 \usepackage{listings}
 %%
 %% date
-\RRdate{November 2014}
+\RRdate{December 2014}
 %%
 %%
 \RRauthor{
@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.0.5, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.0.6, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -268,10 +268,10 @@ In order to tune the time settings, several parameters can be modified in the ba
 \end{figure}
 
 \subsubsection{Time Stamps}
-You can change the trace time bounds by using the \textit{Start} and \textit{End} fields (\textcolor{red}{1} and \textcolor{red}{2} resp. in Fig. \ref{timeSettings}) at the bottom of the window. By default, after loading a trace, the values are the starting and ending timestamps of the trace. If an area of the graph is selected, or if a zooming operation is performed, the displayed values are the starting and ending timestamps of the selected/zoomed area. The \textit{Reset} (\textcolor{red}{3}) button enables to get the original values back.
+There are two different time stamps values shown: the first one (\textcolor{red}{1} in Fig. \ref{timeSettings}) shows the starting and ending timestamps of the currently displayed zone of the trace, the second (\textcolor{red}{2}) shows the bounding time stamps of the currently selected zone (or are identical to the first ones, if there is currently no selection). The first time stamps are not editable, but the second sets of time stamps are, and allows to set the trace time bounds by modifying the values. The \textit{Cancel Selection} button  (\textcolor{red}{4}) cancels the current selection (both temporal and spatial) to the currently displayed time stamps and event producers. The \textit{Reset} button (\textcolor{red}{3}) also cancels the current selection and in addition resets the temporal values to the global starting and ending time stamps values of the trace, and also resets the event producers to all the event producers present in the trace.
 
 \subsubsection{Time Slices}
-The \textit{Timeslice Number} field (\textcolor{red}{4}) corresponds to the number of time slices that will be used to compute the aggregation. It is advised to tune this parameter in order to find a granularity that is convenient to the analysis. As the aggregation algorithm complexity is dependent on this parameter, it is advised to increment it progressively to keep good performances.
+The \textit{Timeslice Number} field (\textcolor{red}{5}) corresponds to the number of time slices that will be used to compute the aggregation. It is advised to tune this parameter in order to find a granularity that is convenient to the analysis. As the aggregation algorithm complexity is dependent on this parameter, it is advised to increment it progressively to keep good performances.
 
 \subsection{Analysis settings}
 To analyze the trace, several parameters allows to explore  different levels of aggregation and view. The aggregation settings are located under the \textit{Quality curves} display.
@@ -299,10 +299,10 @@ A value of 1 means that the aggregation strength is maximal: all the trace is ag
 Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Once the mouse is released the selection will adjust to nearest selected time slice. It is is also possible to select just one time slice performing a simple click. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
 
 \paragraph{Spatial Selection}
-If a spatio-temporal aggregation operator was chosen, then it is possible to perform a spatial zoom also. If more than one producer are selected, then the spatial selection automatically adjust to the parent node containing all the selected producers. A click on the RUN! button will display zoom on the selected area.
+If a spatio-temporal aggregation operator was chosen, then it is possible to perform a spatial zoom also. If more than one producer are selected, then the spatial selection automatically adjusts to the parent node containing all the selected producers. A click on the RUN! button will zoom on the selected area. A simple click selects a single producer, (or a single producer node, if a producer is too small to be represented), and a double-click selects the whole aggregate.
 
 \paragraph{Zoom history}
-During an exploration session of a trace, the zoom history is recorded, on both temporal and spatial dimensions (i.e. the selected time zones, and the selected event producers). It is possible to browse the history through the $-$ and $+$ buttons in the top right corner (cf. \textcolor{red}{3} and \textcolor{red}{4} in \ref{ocelotlButtons}). The $-$ button shows the previous zoom value, and the $+$ button shows the next zoom value. The history is lost when a different trace  or a different aggregation operator is selected.
+During an exploration session of a trace, the zoom history is recorded, on both temporal and spatial dimensions (i.e. the selected time zones, and the selected event producers). It is possible to browse the history through the $<-$ and $->$ buttons in the top right corner (cf. \textcolor{red}{3} and \textcolor{red}{4} in \ref{ocelotlButtons}). The $<-$ button shows the previous zoom value, and the $->$ button shows the next zoom value. The history is lost when a different trace  or a different aggregation operator is selected.
 
 \subsubsection{Switch to another view}
 \begin{figure}[h!]
@@ -340,11 +340,11 @@ Once a run has been performed on a trace, a cache file is generated, in order to
 	\caption{An overview of a trace}
 	\label{overview}
 \end{figure}
-In the top right corner, Ocelotl displays an overview of the current trace, which gives the context of the trace. When a zoomed view of a trace is displayed, the overview highlights in white the currently displayed view. When selecting a part of the view on the graph, the corresponding selection is highlighted in blue on the overview.
+In the top right corner, Ocelotl displays an overview of the current trace, which gives the context of the trace. When a zoomed view of a trace is displayed, the overview highlights in red the currently displayed view. When selecting a part of the view on the graph, the corresponding selection is highlighted in blue on the overview.
 
-The overview shows a temporal summary of the currently displayed trace. It is based on the mode operator described in subsection \ref{visuop}.
+The overview shows a temporal summary of the currently displayed trace. It is based on the mode operator described in subsection \ref{visuop}. The two small button on the right of the overview can be used to modified the aggregation level of the overview, and works in a similar fashion that the buttons \textcolor{red}{2} in Fig. \ref{aggregSettings}. Alternatively, you can also use the keys \textit{u} and \textit{i} to browse between aggregation levels.
 
-\underline{\textbf{Note:}} Since the overview is computed in a different thread, there may be a delay before it appears.
+\underline{\textbf{Note:}} Since the overview is computed in a different thread, there may be a delay between the display of the main graph and the apparition of the overview.
 
 \subsection{Statistics}
 \begin{figure}[h!]
@@ -364,7 +364,7 @@ The combo box lists all the compatible statistics operators for the currently se
 The statistics can be sorted by clicking on the column names of the table.
 
 \subsection{Take a snapshot}
-In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
+In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in a text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
 
 \subsection{Known Issues}
 You may need to resize manually the different views, according to your resolution.
