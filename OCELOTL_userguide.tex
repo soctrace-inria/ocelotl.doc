@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.0.6, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.1.2, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -82,18 +82,17 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 
 %=====================================================================
 
-Ocelotl is a tool to explore, analyze and visualize execution traces through aggregation techniques. It is part of the SoC-Trace project, and as such, it is integrated in the FrameSoC framework as an Eclipse plug-in. 
+Ocelotl is a tool to explore, analyze and visualize execution traces through aggregation techniques. It is part of the SoC-Trace project, and as such, it is integrated in the Framesoc framework as an Eclipse plug-in. 
 
 \section{Installation}
 Please refer to the installation procedure described on the Ocelotl wiki page: \url{https://github.com/soctrace-inria/ocelotl/wiki/User-Guide}.
-
 
 \section{Launch Ocelotl}
 
 \begin{figure}[h!]
 	\centering
     \includegraphics[width=1.0\textwidth]{images/framesoc_launch.png}
-	\caption{FrameSoC Eclipse Workbench at startup}
+	\caption{Framesoc Eclipse Workbench at startup}
 	\label{frameLaunch}
 \end{figure}
 
@@ -102,14 +101,14 @@ In order to launch Ocelotl:
 \begin{enumerate}
 	\item 
 	\begin{itemize}
-		\item Go to the FrameSoC menu, choose the \textit{Trace Analysis} entry and click on \textit{Launch Analysis Tool}. 
+		\item Go to the Framesoc menu, choose the \textit{Trace Analysis} entry and click on \textit{Launch Analysis Tool}. 
 		\item Or click on the \textit{Analyze Trace} icon.
 	\end{itemize}
 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.5]{images/labeled.png}
-		\caption{The FrameSoC menu and the \textit{Analyze Trace} icon}
+		\caption{The Framesoc menu and the \textit{Analyze Trace} icon}
 		\label{launchOcelotl}
 	\end{figure}
 	
@@ -144,7 +143,7 @@ In this section, we describe how to load a trace, launch the analysis and explor
 
 \subsubsection{Select a trace}
 
-At the top of the Ocelotl window, the \textit{Trace Overview} tool bar allows to select a trace to analyze (element \textcolor{red}{1} in Fig. \ref{traceConf}). It shows the traces already exported in FrameSoC. Once a trace is selected, the default settings compatible with the trace are automatically selected. However it is possible to change these settings, as described in the following subsections. 
+At the top of the Ocelotl window, the \textit{Trace Overview} tool bar allows to select a trace to analyze (element \textcolor{red}{1} in Fig. \ref{traceConf}). It shows the traces already exported in Framesoc. Once a trace is selected, the default settings compatible with the trace are automatically selected. However it is possible to change these settings, as described in the following subsections. 
 
 \subsubsection{Metric Selection}
 The \textit{Metric} combo (element \textcolor{red}{2} in Fig. \ref{traceConf}) displays the metrics compatible with the current trace.
@@ -219,13 +218,15 @@ At the top right of the Ocelotl tool, a button (\textcolor{red}{1} in Fig. \ref{
 	\label{ocelotlsettings}
 \end{figure}
 
-\subsubsection{Quality Curves settings}
-The tab \textit{Quality Curves} enables to change the appearance of complexity and information curves provided by the aggregation algorithm:
+\subsubsection{Aggregation Settings}
+The tab \textit{Aggregation Settings} contains two subsections: the \textit{Quality Curves} and \textit{Parameter P} settings. The \textit{Quality Curves} settings enables to change the appearance of complexity and information curves provided by the aggregation algorithm:
 \begin{itemize}
 	\item \textit{Normalize Qualities}: normalizes the curves and scale them on the interval $[0:1]$, which improves their readabilty. \underline{\textbf{Note:}} normalization should not be used with spatiotemporal operators since it provides incorrect results.
     \item You can choose between two representations of the curves: rising curves (complexity gain, information gain) or decreasing curves (complexity reduction, information loss).
     \item The \textit{Threshold} parameter determines the quality curves precision. The more its value decreases, the more the precision increases and the more aggregation steps are found. However, setting a too small value may lead to bad performances, so we advice to keep the default value.
 \end{itemize}
+
+The \textit{Parameter P} settings let you choose the strategy used to select the P parameter that will be chosen after launching an analysis.
 
 \subsubsection{Cache Settings}
 To prevent time-consuming loading of traces from the database, we use a cache system to accelerate access to the trace raw data. If the cache is enabled in the settings, then the first time a trace is analyzed, a cache file is generated. A cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metric operator, and a specific time region.
@@ -254,8 +255,12 @@ In the \textit{Advanced Settings} tab, you can configure some advanced settings\
 	\item \textit{Working Threads}: set the number of active threads during the trace reading. 
 \end{itemize}
 
-\subsubsection{Miscellaneous Settings}
-The \textit{Miscellaneous Settings} allow to set the saving directory of the snapshots taken in Ocelolt.
+\subsubsection{Snapshot Settings}
+The \textit{Snapshot Settings} allow to set the saving directory of the snapshots taken in Ocelotl, as well as the resolution of the snapshot. The latter feature can be useful since drawing is relaunch by taking into account the new resolution, meaning that it can overcome the limitation of the screen resolution, and thus avoid any visual aggregations.
+
+\subsubsection{Overview Settings}
+The \textit{Overview Settings} allow to enable or disable the overview, along with customizing the color and transparency settings of the selection display on the overview.
+
 
 \subsection{Time settings}
 In order to tune the time settings, several parameters can be modified in the bar under the graph display area (Fig. \ref{timeSettings}).
@@ -268,7 +273,7 @@ In order to tune the time settings, several parameters can be modified in the ba
 \end{figure}
 
 \subsubsection{Time Stamps}
-There are two different time stamps values shown: the first one (\textcolor{red}{1} in Fig. \ref{timeSettings}) shows the starting and ending timestamps of the currently displayed zone of the trace, the second (\textcolor{red}{2}) shows the bounding time stamps of the currently selected zone (or are identical to the first ones, if there is currently no selection). The first time stamps are not editable, but the second sets of time stamps are, and allows to set the trace time bounds by modifying the values. The \textit{Cancel Selection} button  (\textcolor{red}{4}) cancels the current selection (both temporal and spatial) to the currently displayed time stamps and event producers. The \textit{Reset} button (\textcolor{red}{3}) also cancels the current selection and in addition resets the temporal values to the global starting and ending time stamps values of the trace, and also resets the event producers to all the event producers present in the trace.
+There are two different time stamps values shown: the first one (\textcolor{red}{1} in Fig. \ref{timeSettings}) shows the starting and ending timestamps of the currently displayed zone of the trace, the second (\textcolor{red}{2}) shows the bounding time stamps of the currently selected zone (or are identical to the first ones, if there is currently no selection). The first time stamps are not editable, but the second sets of time stamps are, and allows to set the trace time bounds by modifying the values. The \textit{Cancel Selection} button  (\textcolor{red}{4}) cancels the current selection (both temporal and spatial) to the currently displayed time stamps and event producers. Alternatively, the selection can be canceled with a middle-click. The \textit{Reset} button (\textcolor{red}{3}) also cancels the current selection and in addition resets the temporal values to the global starting and ending time stamps values of the trace, and also resets the event producers to all the event producers present in the trace.
 
 \subsubsection{Time Slices}
 The \textit{Timeslice Number} field (\textcolor{red}{5}) corresponds to the number of time slices that will be used to compute the aggregation. It is advised to tune this parameter in order to find a granularity that is convenient to the analysis. As the aggregation algorithm complexity is dependent on this parameter, it is advised to increment it progressively to keep good performances.
@@ -326,6 +331,11 @@ Fig. \ref{showAggreg} shows an aggregated trace, with the proportion view. At th
 \subsubsection{Spatio-temporal Aggregate}
 If a spatio-temporal aggregation is used, it is possible that the size of the window does not allow to correctly display the aggregates, especially if there is a great number of producers. If in the aggregate there is only disparities on the spatial level, then the aggregate is displayed with right to left stripes. If the disparities are also temporal, then the stripes go from left to right. Both of these cases can be seen in Fig. \ref{showAggreg}. In any case, to display the content of the aggregate, right-click on the aggregate and the content will be displayed in a new window. To close the newly created window, simply click on it.
 
+\subsubsection{Y Axis}
+Depending on the selected aggregation operator and visualization type, a Y axis displaying some additional information will appear on the left side of the graph display. For spatiotemporal aggregation, the Y axis display the hierarchy of the event producers. This can be seen in Fig. \ref{showAggreg}. The hierarchy is shown as a set of rectangles, each representing a level of hierarchy --- from left to right, the more general to the specific (typically root, cluster, machine, node). By hovering the mouse, the tool tip display the name of the producer. If there is not enough place to correctly display the producers, they will be aggregated visually. By right-clicking on one of the producer, a hierarchy tree of the hierarchy will be shown in a new window. Additionally it can be used to select the event producer for the whole displayed time region, by simply clicking on the producer.
+
+In the case of a proportion view with a temporal aggregation. the Y axis displays the proportion value.
+
 \subsection{Load and save a cache file}
 \subsubsection{Load}
 An alternative way to load a trace, instead of using the combo box, is to load it from its cache file, by using the button to the right of the combo box (element \textcolor{red}{5} in Fig. \ref{traceConf}). It opens a new window, allowing to select a cache file. If the selected cache file is valid and corresponds to a trace currently in the Framesoc database, then the trace is automatically loaded with the settings saved in the cache file.
@@ -367,7 +377,13 @@ The statistics can be sorted by clicking on the column names of the table.
 In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in a text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
 
 \subsection{Known Issues}
-You may need to resize manually the different views, according to your resolution.
+You may need to resize manually the different views, according to your resolution. Several other problems are known:
+\begin{itemize}
+	\item The temporal selection between the main graph and the time axis view have a few pixels of difference.
+	\item The scaling of the Y axis in the temporal aggregation-proportion visualization case, does not display round figures for values inferior to 1.
+\end{itemize}
+
+For a list of all the current known issues in Ocelotl, please refer to the issues section of our github \footnote{\url{https://github.com/soctrace-inria/ocelotl/issues}}.
 
 \newpage
 
