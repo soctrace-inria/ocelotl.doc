@@ -20,7 +20,7 @@
 \usepackage{listings}
 %%
 %% date
-\RRdate{December 2014}
+\RRdate{January 2015}
 %%
 %%
 \RRauthor{
@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.1.2, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.1.3, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -151,6 +151,7 @@ At the moment, the available metrics are:
 \begin{itemize}
 	\item \textit{Events} which performs an analysis based on the event occurrences. This type of analysis is compatible with all the traces.
 	\item \textit{States} which performs an analysis based on the event duration. This analysis requires the trace to contain events of the type state.
+	\item \textit{States Average} which performs an analysis based on the average duration of a state in a given time slice. This analysis requires the trace to contain events of the type state.
 	\item \textit{Variables} which performs an analysis based on the variation of the value of the event over time. This analysis requires the trace to contain events of the type variable.
 \end{itemize}
 
@@ -161,7 +162,7 @@ Once the type of metric selected, it is possible to choose the aggregation opera
 	\item The \textit{Spatiotemporal aggregation}, which performs an aggregation based on the temporal and the spatial dimension. The spatial dimension is based on the hierarchy of event producers.
 \end{itemize}
 
-It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Fig. \ref{microSettings})
+It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Fig. \ref{microSettings}).
 
 \begin{figure}[h!]
 	\centering
@@ -173,7 +174,7 @@ It is possible to configure the analysis by clicking on the \textit{Settings} bu
 In the aggregation settings, by default, all the event types and all the event producers are selected. The available settings are:
 \begin{itemize}
 	\item in the \textit{Event Types} tab, the filtering of the event types involved in the analysis;
-	\item in the \textit{Event Producers} tab, the filtering of the event producers (the resources that produce the events) involved in the analysis. The producers are shown with their hierarchy, and depending on whether the operator required a valid hierarchy or not\footnote{The spatio-temporal operators take into account the hierarchy, while the temporal ones do not.}, the deselection of a parent node can lead to the deselection of its children nodes. The \textit{Add Result} button enables to load a set of event producers saved as an analysis result by another tool;
+	\item in the \textit{Event Producers} tab, the filtering of the event producers (the resources that produce the events) involved in the analysis. The producers are shown with their hierarchy, and depending on whether the operator required a valid hierarchy or not\footnote{The spatio-temporal operators take into account the hierarchy, while the temporal ones do not.}, the deselection of a parent node can lead to the deselection of its children nodes. The \textit{Add Result} button enables to load a set of event producers saved as an analysis result by another tool.
 \end{itemize}
 
 \subsubsection{Visualization Settings}
@@ -186,7 +187,7 @@ The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) pr
 		\item \textit{Show part number}: display the number of each aggregate part to help distinguishing them.
 	\end{itemize}
 	\item \textit{Temporal Stacked Bar Chart}: is a visualization showing the same aggregates as in \textit{Parts}, but also the proportion of event occurrences (or the ratio of state duration, if state distribution was selected in the previous step) for each aggregate. In this visualization, each event/state is separated vertically in each aggregate and their proportion is shown by making the height of each event/state in an aggregate proportional to its occurrence/duration. The events/states that have a proportion too small to be visible, are aggregated and displayed on top of the aggregate as a dotted line. In the \textit{Settings} window, you can customize the color of each event.
-	\item \textit{Mode}: is a visualization based on the value that appears most often \footnote{It is based on the notion of mode in statistics \url{http://en.wikipedia.org/wiki/Mode_(statistics)}}. It is available for both temporal and spatiotemporal aggregation operators. In the \textit{Settings} window, you can customize the color of each event.
+	\item \textit{Mode}: is a visualization based on the value that appears most often \footnote{It is based on the notion of mode in statistics \url{http://en.wikipedia.org/wiki/Mode_(statistics)}}. It is available for both temporal and spatiotemporal aggregation operators. In the \textit{Settings} window, you can customize the color of each event. In the settings of the spatiotemporal mode, you can also perform a filtering of the displayed event types. The difference with the event type filtering in the aggregation settings, is that the aggregation process is performed with all the types selected in the aggregation settings, but the visualization takes into account only the types not filtered in its settings. 
 \end{itemize}
 
 \subsection{Quality Curves}
@@ -247,16 +248,19 @@ Several settings are available to configure the cache:
 	\end{itemize}   
 \end{itemize} 
 
+If an aggregation was performed using an approximate strategy, a warning is displayed in the status bar of Eclipse.
+
 \subsubsection{Advanced Settings}
 In the \textit{Advanced Settings} tab, you can configure some advanced settings\footnote{\textbf{Note:} Modifying these values might decrease the trace reading performances.}:
 \begin{itemize}
 	\item \textit{Event Number Retrieved by Threads}: set how much events are loaded by threads for each iteration during the trace reading.
 	\item \textit{Event Producers per Query}: enable to divide the query into several queries with a fixed number of event producers. This functionality is useful if the amount of free space on the drive is low, as the temp directory is used to store the query result during the trace reading. The default value is 0 which corresponds to fetching all producers in one query.
 	\item \textit{Working Threads}: set the number of active threads during the trace reading. 
+	\item \textit{Leave Aggregation}: it is possible to specify a maximum number of leaf event producers (i.e. event producers that have no child in the hierarchy). This is useful to bound the size and thus the memory footprint of the generated microscopic model, when there is a large number of event producers. If the maximum number of leaves is reached, then some event producers are aggregated at a hierarchical level. Ocelotl tries to find the node that will minimized the number of aggregated producers. This aggregation will of course affects the aggregation process, and thus displayed results might differ from the ones where no event producer is aggregated. If some event producers are aggregated, then a warning is displayed in the status bar of Eclipse. When performing a spatial zoom, if the number of leaves displayed is under the maximal bound, then the event producers are no longer aggregated.
 \end{itemize}
 
 \subsubsection{Snapshot Settings}
-The \textit{Snapshot Settings} allow to set the saving directory of the snapshots taken in Ocelotl, as well as the resolution of the snapshot. The latter feature can be useful since drawing is relaunch by taking into account the new resolution, meaning that it can overcome the limitation of the screen resolution, and thus avoid any visual aggregations.
+The \textit{Snapshot Settings} allow to set the saving directory of the snapshots taken in Ocelotl, as well as the resolution of the snapshot. The latter feature can be useful since drawing is relaunched by taking into account the new resolution, meaning that it can overcome the limitation of the screen resolution, and thus avoid any visual aggregations.
 
 \subsubsection{Overview Settings}
 The \textit{Overview Settings} allow to enable or disable the overview, along with customizing the color and transparency settings of the selection display on the overview.
@@ -301,7 +305,7 @@ In order to find a relevant aggregation, you can tune the \textit{Parameter} set
 A value of 1 means that the aggregation strength is maximal: all the trace is aggregated. On the opposite, a value of 0 means that each time slice is disaggregated. An intermediate value provides a compromise between both extrema. The button (\textcolor{red}{3}) resets the parameter to its default value --- i.e. the value displayed just after a run.
 
 \subsubsection{Zoom}
-Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Once the mouse is released the selection will adjust to nearest selected time slice. It is is also possible to select just one time slice performing a simple click. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
+Once you obtain an interesting aggregation level, you may want to focus on a particular time area. It is possible to zoom in on the trace by selecting an area by clicking and dragging with the left button of the mouse. Once the mouse is released the selection will adjust to the nearest selected time slice. It is is also possible to select just one time slice performing a simple click. Then, click on RUN! or press ENTER to display the selected area. In order to zoom out, you must click on \textit{Reset} and then on RUN!, to go back to the global view of the trace.
 
 \paragraph{Spatial Selection}
 If a spatio-temporal aggregation operator was chosen, then it is possible to perform a spatial zoom also. If more than one producer are selected, then the spatial selection automatically adjusts to the parent node containing all the selected producers. A click on the RUN! button will zoom on the selected area. A simple click selects a single producer, (or a single producer node, if a producer is too small to be represented), and a double-click selects the whole aggregate.
@@ -332,7 +336,7 @@ Fig. \ref{showAggreg} shows an aggregated trace, with the proportion view. At th
 If a spatio-temporal aggregation is used, it is possible that the size of the window does not allow to correctly display the aggregates, especially if there is a great number of producers. If in the aggregate there is only disparities on the spatial level, then the aggregate is displayed with right to left stripes. If the disparities are also temporal, then the stripes go from left to right. Both of these cases can be seen in Fig. \ref{showAggreg}. In any case, to display the content of the aggregate, right-click on the aggregate and the content will be displayed in a new window. To close the newly created window, simply click on it.
 
 \subsubsection{Y Axis}
-Depending on the selected aggregation operator and visualization type, a Y axis displaying some additional information will appear on the left side of the graph display. For spatiotemporal aggregation, the Y axis display the hierarchy of the event producers. This can be seen in Fig. \ref{showAggreg}. The hierarchy is shown as a set of rectangles, each representing a level of hierarchy --- from left to right, the more general to the specific (typically root, cluster, machine, node). By hovering the mouse, the tool tip display the name of the producer. If there is not enough place to correctly display the producers, they will be aggregated visually. By right-clicking on one of the producer, a hierarchy tree of the hierarchy will be shown in a new window. Additionally it can be used to select the event producer for the whole displayed time region, by simply clicking on the producer.
+Depending on the selected aggregation operator and visualization type, a Y axis displaying some additional information will appear on the left side of the graph display. For spatiotemporal aggregation, the Y axis displays the hierarchy of the event producers. This can be seen in Fig. \ref{showAggreg}. The hierarchy is shown as a set of rectangles, each representing a level of the hierarchy --- from left to right, the more general to the specific (typically root, cluster, machine, node). By hovering the mouse, the tooltip displays the name of the producer. If there is not enough place to correctly display the producers, they will be aggregated visually. By right-clicking on one of the producer, a hierarchy tree with the selected producer as root will be shown in a new window. Additionally it can be used to select the event producer for the whole displayed time region, by simply clicking on the producer.
 
 In the case of a proportion view with a temporal aggregation. the Y axis displays the proportion value.
 
@@ -367,8 +371,8 @@ Ocelotl displays statistics about the currently selected data (as illustrated by
 
 The combo box lists all the compatible statistics operators for the currently selected operators. For now, only one statistic operator is available. It summarizes the data of the currently selected time region:
 \begin{itemize} 
-	\item If the \textit{Events} metric is selected, then all events are considered to be punctual events, then the statistics display shows for each type of events the number of occurrences of each events.
-	\item If the \textit{States} metric is selected, then the statistics display shows the portion of time spend in this state during the selected time region. Note that the total percentage can be different of 100\% since some event producers might be in no state and then the total is under 100\%. It is also possible possible to have more than 100\%, since some states can be embedded, meaning that an event producer can have more than one active state.
+	\item If the \textit{Events} metric is selected, then all events are considered to be punctual events, then the statistics display shows for each type of events their number of occurrences.
+	\item If the \textit{States} metric is selected, then the statistics display shows the portion of time spend in this state during the selected time region. Note that the total percentage can be different of 100\% since some event producers can be in no active state, leading to a total under 100\%. It is also possible possible to have more than 100\%, since some states can be embedded, meaning that an event producer can have more than one active state.
 \end{itemize}
 
 The statistics can be sorted by clicking on the column names of the table.
