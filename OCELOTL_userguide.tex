@@ -20,12 +20,12 @@
 \usepackage{listings}
 %%
 %% date
-\RRdate{January 2015}
+\RRdate{February 2015}
 %%
 %%
 \RRauthor{
-Youenn Corre \thanks{INRIA, youenn.corre@inria.fr} \\
-Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr} 
+Youenn Corre\thanks{INRIA, youenn.corre@inria.fr} \\
+Damien Dosimont\thanks{INRIA, damien.dosimont@imag.fr} 
 }
 
 %% On each even page
@@ -43,7 +43,7 @@ Damien Dosimont \thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.1.3, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.1.4, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -145,7 +145,7 @@ In this section, we describe how to load a trace, launch the analysis and explor
 
 At the top of the Ocelotl window, the \textit{Trace Overview} tool bar allows to select a trace to analyze (element \textcolor{red}{1} in Fig. \ref{traceConf}). It shows the traces already exported in Framesoc. Once a trace is selected, the default settings compatible with the trace are automatically selected. However it is possible to change these settings, as described in the following subsections. 
 
-It is also possible to load a trace from the Framesoc Trace tree (the frame on the top left in Fig. \ref{frameLaunch}): right-click on the trace that should be load and select \textit{Show in Ocelotl} in the context menu. By using that way to load a trace, it is possible to launch multiple instances of Ocelotl, up to five simultaneous instances maximum\footnote{This limit can be set in the Framesoc configuration file. Please refer to the Framesoc user doc to configure Framesoc (\url{https://github.com/soctrace-inria/framesoc/blob/master/src/fr.inria.soctrace.maven.repository/archive/doc/framesoc_user_guide.pdf?raw=true}).}.
+It is also possible to load a trace from the Framesoc Trace tree (the frame on the top left in Fig. \ref{frameLaunch}): right-click on the trace that should be load and select \textit{Show in Ocelotl} in the context menu. By using this method to load a trace, it is possible to launch multiple instances of Ocelotl, up to a maximum of five simultaneous instances\footnote{This limit can be set in the Framesoc configuration file. Please refer to the Framesoc user doc to configure Framesoc (\url{https://github.com/soctrace-inria/framesoc/blob/master/src/fr.inria.soctrace.maven.repository/archive/doc/framesoc_user_guide.pdf?raw=true}).}.
 
 \subsubsection{Metric Selection}
 The \textit{Metric} combo (element \textcolor{red}{2} in Fig. \ref{traceConf}) displays the metrics compatible with the current trace.
@@ -181,7 +181,7 @@ In the aggregation settings, by default, all the event types and all the event p
 
 \subsubsection{Visualization Settings}
 \label{visuop}
-The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected metric and aggregation operator. The currently available choices are:
+The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected metric and aggregation operators. The currently available choices are:
 \begin{itemize}
 	\item \textit{Partition}: is a visualization showing aggregates that correspond to an homogeneous behavior in the trace. The aggregates are separated by a blank space and all have a different colors. For a temporal aggregation, the available parameters in \textit{Settings} are:
 	\begin{itemize}
@@ -223,32 +223,33 @@ At the top right of the Ocelotl tool, a button (\textcolor{red}{1} in Fig. \ref{
 \end{figure}
 
 \subsubsection{Aggregation Settings}
-The tab \textit{Aggregation Settings} contains two subsections: the \textit{Quality Curves} and \textit{Parameter P} settings. The \textit{Quality Curves} settings enables to change the appearance of complexity and information curves provided by the aggregation algorithm:
+The tab \textit{Aggregation Settings} contains two subsections: the \textit{Quality Curves} and \textit{Parameter P} settings. The \textit{Quality Curves} settings enable to change the appearance of the complexity and information curves provided by the aggregation algorithm:
 \begin{itemize}
-	\item \textit{Normalize Qualities}: normalizes the curves and scale them on the interval $[0:1]$, which improves their readabilty. \underline{\textbf{Note:}} normalization should not be used with spatiotemporal operators since it provides incorrect results.
+	\item \textit{Normalize Qualities}: normalize the curves and scale them on the interval $[0:1]$ to improve their readability. \underline{\textbf{Note:}} normalization is no longer taken into account in spatiotemporal operators since it provides incorrect results.
     \item You can choose between two representations of the curves: rising curves (complexity gain, information gain) or decreasing curves (complexity reduction, information loss).
-    \item The \textit{Threshold} parameter determines the quality curves precision. The more its value decreases, the more the precision increases and the more aggregation steps are found. However, setting a too small value may lead to bad performances, so we advice to keep the default value.
+    \item The \textit{Threshold} parameter determines the quality curves precision. The more its value decreases, the more the precision increases and consequently more aggregation steps are found. However, setting a too small value may lead to bad performances, so we advice to keep the default value.
 \end{itemize}
 
 The \textit{Parameter P} settings let you choose the strategy used to select the P parameter that will be chosen after launching an analysis.
 
 \subsubsection{Cache Settings}
-To prevent time-consuming loading of traces from the database, we use a cache system to accelerate access to the trace raw data. If the cache is enabled in the settings, then the first time a trace is analyzed, a cache file is generated. A cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metric operator, and a specific time region.
+To prevent time-consuming loading of traces from the database, we use a cache system to speed up the access to the trace raw data. If the cache is enabled in the settings, then the first time a trace is analyzed, a cache file is generated. A cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metric operator, and a specific time region. Two operations performed by Ocelotl use cache: the building of the microscopic model and the computation of the parameter P values. 
 
 Several settings are available to configure the cache:
 \begin{itemize}
-	\item \textit{Cache Enabled}: allow to enable or disable the cache.
-	\item \textit{Empty Cache}: delete all the cache files in the current cache directory.
-	\item \textit{Datacache directory}: specify the directories where the cache files are stored.
-	\item \textit{Maximum datacache size}: specify the maximum cache size in megabytes. When the maximum size is reached, the cache files with the oldest accessed dates are deleted until enough space is available. Specifying a value of -1 means that there is no maximal limit to the cache size.
-	\item \textit{Cache time slice}: the first time a trace is loaded, a cache file is generated --- if the cache is enabled. This parameters specifies the number of time slices used for the generated cache. A higher number means a more accurate cache, but also a bigger cache file.
-	\item \textit{Cache policy}: specify the rebuilding policy used to rebuild the data from the cache file when a "clean" rebuilding is not possible\footnote{A "clean" rebuild means that no time slice of the cache is split inside two time slices of the currently built microscopic description (such time slices are called "dirty" time slices). Typically it is clean when the number of time slices of the cache is dividable by the current number of slices (for example, if the cache was built with 10 000 time slices and the current rebuilt uses only 100 time slices, then one time slice of the new model will be built each from 10 time slices of the cache. But if the current rebuild is using 150 time slices, then some time slices of the cache would be split between two of the new time slices. The rebuild strategies are thus used for those "dirty" cases.}. The available choices are:
+	\item \textit{Data cache enabled}: enable or disable the data cache.
+	\item \textit{Empty cache}: delete all the cache files in the current cache directory.
+	\item \textit{Caches directory}: specify the directories where the cache files are stored. All the cache files specific to a given trace are stored in a subdirectory with a name composed of the name and the ID of the trace.
+	\item \textit{Maximum caches size}: specify the maximum cache size in megabytes. When the maximum size is reached, the cache files with the oldest accessed dates are deleted until enough space is available. Specifying a value of -1 means that there is no maximal limit to the cache size.
+	\item \textit{Data cache time slice}: the first time a trace is loaded, a cache file is generated --- if the cache is enabled. This parameters specifies the number of time slices used for the generated cache. A higher number means a more accurate cache, but also a bigger cache file.
+	\item \textit{Data cache policy}: specify the rebuilding policy used to rebuild the data from the cache file when a "clean" rebuilding is not possible\footnote{A "clean" rebuild means that no time slice of the cache is split inside two time slices of the currently built microscopic description (such time slices are called "dirty" time slices). Typically it is clean when the number of time slices of the cache is dividable by the current number of slices (for example, if the cache was built with 10 000 time slices and the current rebuilt uses only 100 time slices, then one time slice of the new model will be built each from 10 time slices of the cache. But if the current rebuild is using 150 time slices, then some time slices of the cache would be split between two of the new time slices. The rebuild strategies are thus used for those "dirty" cases.}. The available choices are:
 	\begin{itemize}
 		\item \textit{Fast}: the dirty time slices are rebuilt by multiplying the values proportionally to the division of the cache time slice between the two new time slices (e.g. for a time slice which is split with 30\% of its time in one time slice and 70\% in the other, its values will be multiplied by 0.3 and 0.7 respectively). While this is a fast method, it may not be accurate in all cases (especially in cases with high ratio of dirty time slices).
 		\item \textit{Accurate}: the dirty slices are rebuilt by performing a request to the database so that the events are rebuilt precisely. Depending on the event nature (punctual event, state, etc.), the rebuilding can be pretty slow.
 		\item \textit{Automated}: try to automatically choose the best strategy between \textit{Fast} and \textit{Precise}. 
 		\item \textit{Ask me}: show a dialog to the user at each run, from which he can select a strategy.
 	\end{itemize}   
+	\item \textit{Dichotomy cache enabled}: enable or disable the dichotomy cache.
 \end{itemize} 
 
 If an aggregation was performed using an approximate strategy, a warning is displayed in the status bar of Eclipse.
@@ -262,12 +263,14 @@ In the \textit{Advanced Settings} tab, you can configure some advanced settings\
 	\item \textit{Leave Aggregation}: it is possible to specify a maximum number of leaf event producers (i.e. event producers that have no child in the hierarchy). This is useful to bound the size and thus the memory footprint of the generated microscopic model, when there is a large number of event producers. If the maximum number of leaves is reached, then some event producers are aggregated at a hierarchical level. Ocelotl tries to find the node that will minimized the number of aggregated producers. This aggregation will of course affects the aggregation process, and thus displayed results might differ from the ones where no event producer is aggregated. If some event producers are aggregated, then a warning is displayed in the status bar of Eclipse. When performing a spatial zoom, if the number of leaves displayed is under the maximal bound, then the event producers are no longer aggregated.
 \end{itemize}
 
-\subsubsection{Snapshot Settings}
-The \textit{Snapshot Settings} allow to set the saving directory of the snapshots taken in Ocelotl, as well as the resolution of the snapshot. The latter feature can be useful since drawing is relaunched by taking into account the new resolution, meaning that it can overcome the limitation of the screen resolution, and thus avoid any visual aggregations.
+\subsubsection{Selection Settings}
+The selection settings allows to chose the color and transparency values of the selections performed on the diagram.
 
 \subsubsection{Overview Settings}
-The \textit{Overview Settings} allow to enable or disable the overview, along with customizing the color and transparency settings of the selection display on the overview.
+The \textit{Overview Settings} allow to enable or disable the overview, along with customizing the color and transparency settings of the selection display on the overview. It is also possible to enable a pre-aggregation of the leaves event producers, and specify the maximum number of leaves, before a pre-aggregation is performed. 
 
+\subsubsection{Snapshot Settings}
+The \textit{Snapshot Settings} allow to set the saving directory of the snapshots taken in Ocelotl, as well as the resolution of the snapshots. The latter feature can be useful since drawing is relaunched by taking into account the new resolution, meaning that it can overcome the limitation of the screen resolution, and thus avoid any visual aggregations.
 
 \subsection{Time Settings}
 In order to tune the time settings, several parameters can be modified in the bar under the graph display area (Fig. \ref{timeSettings}).
@@ -381,10 +384,10 @@ The combo box lists all the compatible statistics operators for the currently se
 The statistics can be sorted by clicking on the column names of the table.
 
 \subsection{Take a Snapshot}
-In order to save the currently displayed diagram and curves, it is possible to save them as image files along with the current parameters of the trace in a text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
+In order to save the currently displayed diagram, axes and curves, it is possible to save them as image files along with the current parameters of the trace in a text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
 
 \subsection{Known Issues}
-You may need to resize manually the different views, according to your resolution. Another problems is that the temporal selection between the main graph and the time axis view have a few pixels of difference.
+You may need to resize manually the different views, according to your resolution. Another problem is that the temporal selection between the main graph and the time axis view have a few pixels of difference.
 
 For a list of all the current known issues in Ocelotl, please refer to the issues section of our github\footnote{\url{https://github.com/soctrace-inria/ocelotl/issues}}.
 
