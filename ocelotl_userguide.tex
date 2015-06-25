@@ -33,7 +33,7 @@ Damien Dosimont\thanks{INRIA, damien.dosimont@imag.fr}
 %% French title
 \RRtitle{Ocelotl User Guide}
 %% English title
-\RRetitle{Ocelotl User Guide \\ \footnotesize{v. 1.1.6}}
+\RRetitle{Ocelotl User Guide \\ \footnotesize{v. 1.1.8}}
 %%
 \titlehead{Ocelotl User Guide}
 %%
@@ -43,7 +43,7 @@ Damien Dosimont\thanks{INRIA, damien.dosimont@imag.fr}
 %%
 \RCGrenoble 
 %%
-\abstract{This guide describes the Ocelotl tool, in its version 1.1.6, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
+\abstract{This guide describes the Ocelotl tool, in its version 1.1.8, available at the following github repository: \url{https://github.com/soctrace-inria/ocelotl}.}
 
 %%=====================================================================
 %%=====================================================================
@@ -147,22 +147,21 @@ At the top of the Ocelotl window, the \textit{Trace Overview} tool bar can be us
 
 It is also possible to load a trace from the Framesoc Trace tree (the frame on the top left in Fig. \ref{frameLaunch}): right-click on the trace to load and select \textit{Show in Ocelotl} in the context menu. By using this method to load a trace, it is possible to launch multiple instances of Ocelotl, up to a maximum of five simultaneous instances\footnote{This limit can be set in the Framesoc configuration file. Please refer to the Framesoc user doc to configure Framesoc (\url{https://github.com/soctrace-inria/framesoc/blob/master/src/fr.inria.soctrace.maven.repository/archive/doc/framesoc_user_guide.pdf?raw=true}).}.
 
-\subsubsection{Metric Selection}
-The \textit{Metric} combo (element \textcolor{red}{2} in Fig. \ref{traceConf}) displays the metrics compatible with the current trace.
+\subsubsection{Metrics}
+The \textit{Metrics} combo (element \textcolor{red}{2} in Fig. \ref{traceConf}) displays the metrics compatible with the current trace.
 At the moment, the available metrics are: 
 \begin{itemize}
-	\item \textit{Events} which performs an analysis based on the event occurrences. This type of analysis is compatible with all the traces.
-	\item \textit{States} which performs an analysis based on the event duration. This analysis requires the trace to contain events of the type state.
-	\item \textit{States Average} which performs an analysis based on the average duration of a state in a given time slice. This analysis requires the trace to contain events of the type state.
+	\item \textit{Event occurences} which performs an analysis based on the event occurrences. This type of analysis is compatible with all the traces.
+	\item \textit{State total duration} which performs an analysis based on the event duration. This analysis requires the trace to contain events of the type state.
+	\item \textit{State average duration} which performs an analysis based on the average duration of a state in a given time slice. This analysis requires the trace to contain events of the type state.
 	\item \textit{Variables} which performs an analysis based on the variation of the value of the event over time. This analysis requires the trace to contain events of the type variable.
 \end{itemize}
 
-\subsubsection{Aggregation Operator Selection}
-Once the type of metric selected, it is possible to choose the aggregation operator (element \textcolor{red}{3} in Fig. \ref{traceConf}). Three operators are currently available:
+\subsubsection{Dimensions}
+Once the type of metrics selected, it is possible to choose the aggregation operator (element \textcolor{red}{3} in Fig. \ref{traceConf}). Three operators are currently available:
 \begin{itemize}
 	\item The \textit{Temporal Aggregation}, which performs an aggregation based only on the temporal dimension.
 	\item The \textit{Spatiotemporal Aggregation}, which performs an aggregation based on the temporal and the spatial dimension. The spatial dimension is based on the hierarchy of event producers.
-	\item The \textit{Spatiotemporal Leaf Aggregation}, which is similar to the \emph{Spatiotemporal Aggregation}, but also takes into account event producers that are not leaves in the hierarchy of producers, but also produce data.
 \end{itemize}
 
 It is possible to configure the analysis by clicking on the \textit{Settings} button next to the metrics selection combo, which opens a setting window (cf. Fig. \ref{microSettings}).
@@ -174,7 +173,7 @@ It is possible to configure the analysis by clicking on the \textit{Settings} bu
 	\label{microSettings}
 \end{figure}
 
-In the aggregation settings, by default, all the event types and all the event producers are selected. The available settings are:
+In the settings, by default, all the event types and all the event producers are selected. The available settings are:
 \begin{itemize}
 	\item in the \textit{Event Types} tab, the filtering of the event types involved in the analysis;
 	\item in the \textit{Event Producers} tab, the filtering of the event producers (the resources that produce the events) involved in the analysis. The producers are shown with their hierarchy, and depending on whether the operator required a valid hierarchy or not\footnote{The spatio-temporal operators take into account the hierarchy, while the temporal ones do not.}, the deselection of a parent node can lead to the deselection of its children nodes. The \textit{Add Result} button enables to load a set of event producers saved as an analysis result by another tool.
@@ -182,7 +181,7 @@ In the aggregation settings, by default, all the event types and all the event p
 
 \subsubsection{Visualization Settings}
 \label{visuop}
-The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected metric and aggregation operators. The currently available choices are:
+The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) provides a list of available views, in accordance with the compatibility of the previously selected metrics and aggregation operators. The currently available choices are:
 \begin{itemize}
 	\item \textit{Partition}: is a visualization showing aggregates that correspond to an homogeneous behavior in the trace. The aggregates are separated by a blank space and all have a different colors. For a temporal aggregation, the available parameters in \textit{Settings} are:
 	\begin{itemize}
@@ -194,7 +193,7 @@ The \textit{Visualization} combo (\textcolor{red}{4} in Fig. \ref{traceConf}) pr
 \end{itemize}
 
 \subsection{Quality Curves}
-Ocelotl displays curves representing the different aggregation levels, as shown in Fig. \ref{aggregCurves}. The X axis is the aggregation ratio from 1 (fully aggregated) to 0 (maximal level of disaggregation). %(pIC), and the Y axis is the %TODO what is it ?
+Ocelotl displays curves representing the different aggregation levels, as shown in Fig. \ref{aggregCurves}. The X axis is the aggregation ratio from 1 (fully aggregated) to 0 (no aggregation). %(pIC), and the Y axis is the %TODO what is it ?
 The green curve shows the level of displayed complexity and the red is the level of displayed information. 
 %These curves are tied since adding information, add more complexity and vice-versa\footnote{For more information, cf. \cite{}.}.
 The vertical blue line shows the current value of the parameter.
@@ -223,8 +222,8 @@ At the top right of the Ocelotl tool, a button (\textcolor{red}{1} in Fig. \ref{
 	\label{ocelotlsettings}
 \end{figure}
 
-\subsubsection{Aggregation Settings}
-The tab \textit{Aggregation Settings} contains two subsections: the \textit{Quality Curves} and \textit{Parameter P} settings. The \textit{Quality Curves} settings enable to change the appearance of the complexity and information curves provided by the aggregation algorithm:
+\subsubsection{Aggregation}
+The tab \textit{Aggregation} settings contains three subsections: the \textit{Quality Curves} and \textit{Parameter P} settings. The \textit{Quality Curves} settings enable to change the appearance of the complexity and information curves provided by the aggregation algorithm:
 \begin{itemize}
 	\item \textit{Normalize Qualities}: normalize the curves and scale them on the interval $[0:1]$ to improve their readability. \underline{\textbf{Note:}} normalization is no longer taken into account in spatiotemporal operators since it provides incorrect results.
     \item You can choose between two representations of the curves: rising curves (complexity gain, information gain) or decreasing curves (complexity reduction, information loss).
@@ -233,24 +232,27 @@ The tab \textit{Aggregation Settings} contains two subsections: the \textit{Qual
 
 The \textit{Parameter P} settings let you choose the strategy used to select the value of P that will be chosen as default after launching an analysis.
 
-\subsubsection{Cache Settings}
-To prevent time-consuming loading of traces from the database, we use a cache system to speed up the access to the trace raw data. Two operations performed by Ocelotl uses cache: the building of the microscopic model (\emph{data cache}) and the computation of the parameter P values (\emph{dichotomy cache}). If the data cache is enabled in the settings, then the first time a trace is analyzed, a data cache file is generated. A data cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metric operator, and a specific time region. 
+\emph{Enable visual aggregation} prevents the drawing of cluttered representations by aggregating visually graphical objects that can not be represented properly.
+
+\subsubsection{Cache}
+To prevent time-consuming loading of traces from the database, we use a cache system to speed up the access to the trace raw data. Two operations performed by Ocelotl uses cache: the building of the microscopic model (\emph{data cache}) and the computation of the parameter P values (\emph{partition cache}). If the data cache is enabled in the settings, then the first time a trace is analyzed, a data cache file is generated. A data cache file is a plain text file that contains non-null values of the trace, and each cache is specific to an metrics operator, and a specific time region. 
 
 Several settings are available to configure the caches:
 \begin{itemize}
-	\item \textit{Data cache enabled}: enable or disable the data cache.
+
 	\item \textit{Empty cache}: delete all the cache files in the current cache directory.
 	\item \textit{Caches directory}: specify the directory where the cache files are stored. All the cache files specific to a given trace are stored in a subdirectory with a name composed of the name and the unique ID of the trace.
 	\item \textit{Maximum cache size}: specify the maximum cache size in megabytes. When the maximum size is reached, the cache files with the oldest accessed dates are deleted until enough space is available. Specifying a value of -1 means that there is no maximal limit to the cache size.
-	\item \textit{Data cache time slice}: the first time a trace is loaded, a cache file is generated --- if the cache is enabled. This parameter specifies the number of time slices used for the generated cache. A higher number means a more accurate cache, but also a bigger cache file.
+	\item \textit{Trace abstraction cache enabled}: enable or disable the related cache.
+	\item \textit{Optimal time slice number}: the first time a trace is loaded, a cache file is generated --- if the cache is enabled. This parameter specifies the number of time slices used for the generated cache. A higher number means a more accurate cache, but also a bigger cache file.
 	\item \textit{Data cache policy}: specify the rebuilding policy used to rebuild the data from the cache file when a "clean" rebuilding is not possible\footnote{A "clean" rebuild means that no time slice of the cache is split inside two time slices of the currently built microscopic description (such time slices are called "dirty" time slices). Typically it is clean when the number of time slices of the cache is dividable by the current number of slices (for example, if the cache was built with 10 000 time slices and the current rebuilt uses only 100 time slices, then one time slice of the new model will be built each from 10 time slices of the cache. But if the current rebuild is using 150 time slices, then some time slices of the cache would be split between two of the new time slices. The rebuild strategies are thus used for those "dirty" cases.}. The available choices are:
 	\begin{itemize}
 		\item \textit{Fast}: the dirty time slices are rebuilt by multiplying the values proportionally to the division of the cache time slice between the two new time slices (e.g. for a time slice which is split with 30\% of its time in one time slice and 70\% in the other, its values will be multiplied by 0.3 and 0.7 respectively). While this is a fast method, it may not be accurate in all cases (especially in cases with high ratio of dirty time slices).
 		\item \textit{Accurate}: the dirty slices are rebuilt by performing a request to the database so that the events are rebuilt precisely. Depending on the event nature (punctual event, state, etc.), the rebuilding can be pretty slow.
-		\item \textit{Automated}: try to automatically choose the best strategy between \textit{Fast} and \textit{Precise}. 
+		\item \textit{Automated}: try to automatically choose the best strategy between \textit{Fast} and \textit{Accurate}. 
 		\item \textit{Ask me}: show a dialog to the user at each run, from which he can select a strategy.
 	\end{itemize}   
-	\item \textit{Dichotomy cache enabled}: enable or disable the dichotomy cache.
+	\item \textit{Partition cache enabled}: enable or disable the cache used to generate the quality curves.
 \end{itemize} 
 
 If an aggregation was performed using an approximate strategy, a warning is displayed in the status bar of Eclipse.
@@ -261,7 +263,7 @@ In the \textit{Advanced Settings} tab, you can configure some more advanced sett
 	\item \textit{Event Number Retrieved by Threads}: set how much events are loaded by thread for each iteration during the trace loading.
 	\item \textit{Event Producers per Query}: enable to divide the query into several queries with a fixed number of event producers. This functionality is useful if the amount of free space on the drive is low, as the temp directory is used to store the query result during the trace reading. The default value is 0 which corresponds to fetching all producers in one query.
 	\item \textit{Working Threads}: set the number of active threads during the trace reading. 
-	\item \textit{Leave Aggregation}: it is possible to specify a maximum number of leaf event producers (i.e. event producers that have no child in the hierarchy). This is useful to bound the size and thus the memory footprint of the generated microscopic model, especially when there is a large number of event producers. If the maximum number of leaves is reached, then Ocelotl looks for the hierarchy level at which to perform the aggregation. This means that all the event producers that are above the level in the hierarchy will be merged with their parent in the hierarchy level selected for the aggregation. This pre-aggregation will of course affects the aggregation process, and thus the displayed results might differ from the ones where no event producer would be aggregated. If some event producers are aggregated, then a warning is displayed in the status bar of Eclipse. When performing a spatial zoom, if the number of leaves displayed is under the set maximal bound, then the event producers are no longer aggregated.
+	\item \textit{Leaf Aggregation}: it is possible to specify a maximum number of leaf event producers (i.e. event producers that have no child in the hierarchy). This is useful to bound the size and thus the memory footprint of the generated microscopic model, especially when there is a large number of event producers. If the maximum number of leaves is reached, then Ocelotl looks for the hierarchy level at which to perform the aggregation. This means that all the event producers that are above the level in the hierarchy will be merged with their parent in the hierarchy level selected for the aggregation. This pre-aggregation will of course affects the aggregation process, and thus the displayed results might differ from the ones where no event producer would be aggregated. If some event producers are aggregated, then a warning is displayed in the status bar of Eclipse. When performing a spatial zoom, if the number of leaves displayed is under the set maximal bound, then the event producers are no longer aggregated.
 \end{itemize}
 
 \subsubsection{Selection Settings}
@@ -340,7 +342,7 @@ It is possible to display the trace with the other visualization tools integrate
 
 Fig. \ref{showAggreg} shows an aggregated trace, with the proportion view. At the bottom of the graph, a time axis shows the timestamps of the currently displayed events. Events of different types have different colors. By letting the mouse over a part of the graph for a short time, a tooltip note shows the type of events represented by that part of the graph. For the event view, this note also displays the number of occurrences of the events divided by the duration of the aggregate\footnote{The time unit of the trace is displayed in the \textit{Trace Details} tab on the left bottom of the screen.}. For the state view, it is the state duration divided by the aggregate duration.
 
-\subsubsection{Spatio-temporal Aggregate}
+\subsubsection{Spatiotemporal Aggregate}
 If a spatio-temporal aggregation is used, it is possible that the size of the window does not allow to correctly display the aggregates, especially if there is a great number of producers. If, in an aggregate, there are disparities only on the spatial level, then the aggregate is displayed with right to left stripes. If the disparities are also temporal, then the stripes go from left to right. Both of these cases can be seen in Fig. \ref{showAggreg}. In any case, to display the content of the aggregate, right-click on the aggregate and the content will be displayed in a new window. To close the newly created window, simply click on it.
 
 \subsubsection{Y Axis}
@@ -379,8 +381,8 @@ Ocelotl displays statistics about the currently selected data (as illustrated by
 
 The combo box lists all the compatible statistics operators for the currently selected operators. For now, only one statistic operator is available. It summarizes the data of the currently selected time region:
 \begin{itemize} 
-	\item If the \textit{Events} metric is selected, then all events are considered to be punctual events, then the statistics display shows for each type of event their number of occurrences.
-	\item If the \textit{States} metric is selected, then the statistics display shows the portion of time spent in this state during the selected time region. Note that the total percentage can be different of 100\% since some event producers can be in no active state, leading to a total under 100\%. It is also possible possible to have more than 100\%, since some states can be embedded, meaning that an event producer can have more than one active state at a time.
+	\item If the \textit{Event occurence} metrics is selected, then all events are considered to be punctual events, then the statistics display shows for each type of event their number of occurrences.
+	\item If the \textit{State total duration} metrics is selected, then the statistics display shows the portion of time spent in this state during the selected time region. Note that the total percentage can be different of 100\% since some event producers can be in no active state, leading to a total under 100\%. It is also possible possible to have more than 100\%, since some states can be embedded, meaning that an event producer can have more than one active state at a time.
 \end{itemize}
 
 The statistics can be sorted by clicking on the column names of the table.
@@ -389,9 +391,16 @@ The statistics can be sorted by clicking on the column names of the table.
 In order to save the currently displayed diagram, axes and curves, it is possible to save them as image files along with the current parameters of the trace in a text file. This is done by clicking the button at the top right of the display (\textcolor{red}{2} in Fig. \ref{ocelotlButtons}).
 
 \subsection{Known Issues}
-You may need to resize manually the different views, according to your resolution. Another problem is that the temporal selection between the main graph and the time axis view have a few pixels of difference.
 
-For a list of all the current known issues in Ocelotl, please refer to the issues section of our GitHub\footnote{\url{https://github.com/soctrace-inria/ocelotl/issues}}.
+\begin{itemize}
+ \item Depending on the main window size or on the screen resolution, some components of the Ocelotl UI might not be displayed correctly or might be partially hidden.
+Workaround: Resize the window, put Ocelotl in full screen by double-clicking on the Ocelotl tab or use the resize handles of the Ocelotl widgets to resize them accordingly.
+\item The temporal selection between the main graph and the time axis view have a few pixels of difference.
+\item Resizing the window can take a while depending on the implementation of SWT. This phenomenon has been mainly encountered on Linux systems.
+\item Clicking repeatedly and quickly on the quality curves may cause a incoherence between the selected parameter p and the visualization that is printed (which corresponds to a previously computed aggregation). Click again on the curves to actualize the visualization.
+\end{itemize}
+
+For an exhaustive list of all the current known issues in Ocelotl, please refer to the issues section of our GitHub\footnote{\url{https://github.com/soctrace-inria/ocelotl/issues}}.
 
 \newpage
 
